@@ -3,6 +3,7 @@ import { requireRole } from "@/lib/auth";
 
 const NAV = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/lists", label: "Lists / Settings" },
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {

@@ -8,11 +8,11 @@ export default function AdminDashboard() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <p className="font-semibold">Trainers</p>
-          <p className="mt-1 text-sm text-slate-500">Next phase: trainer profiles and client links.</p>
+          <p className="mt-1 text-sm text-slate-500">Set up trainer profiles in Lists / Settings before assigning clients.</p>
         </Card>
         <Card>
           <p className="font-semibold">Clients</p>
-          <p className="mt-1 text-sm text-slate-500">Next phase: client records and access invitations.</p>
+          <p className="mt-1 text-sm text-slate-500">Next phase: client records, trainer links, and access invitations.</p>
         </Card>
       </div>
     </div>
