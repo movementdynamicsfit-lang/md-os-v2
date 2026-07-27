@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Movement Dynamics OS v2
 
-## Getting Started
+Clean rebuild of the Movement Dynamics operating system.
 
-First, run the development server:
+## Phase 1 Scope
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Supabase Auth connection
+- Login
+- Password reset
+- Auth callback
+- Role-aware redirect
+- Protected dashboards for admin, trainer, and client
+- Admin read-only people table
+- First database migration for profiles and role assignments
+
+No booking, packages, payroll, approvals, or integrations are included yet.
+
+## Local Setup
+
+Copy `.env.example` to `.env.local` and fill in the values from Supabase and Vercel.
+
+```text
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_APP_URL=
+APP_TIMEZONE=Asia/Kuala_Lumpur
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Supabase Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Run migrations in order from `supabase/migrations`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+After creating the first admin user in Supabase Auth, grant the admin role:
 
-## Learn More
+```sql
+insert into public.role_assignments (profile_id, role)
+select id, 'admin'
+from public.profiles
+where email = 'your-email@example.com'
+on conflict (profile_id, role) do nothing;
+```
 
-To learn more about Next.js, take a look at the following resources:
+Password reset requires this redirect URL in Supabase Auth settings:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```text
+https://your-vercel-domain.vercel.app/auth/callback
+```
